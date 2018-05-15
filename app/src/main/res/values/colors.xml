@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="primaryTextColor">#555</color>
+    <color name="secondaryTextColor">#777</color>
+    <color name="disableTextColor">#AAA</color>
+
+    <color name="colorPrimary">#333</color>
+    <color name="colorPrimaryDark">#000</color>
+    <color name="colorAccent">#008FDE</color>
+
+    <color name="categoryGeneral">#008FDE</color>
+    <color name="categorySocial">#A78358</color>
+    <color name="categoryEconomics">#A78358</color>
+    <color name="categoryLife">#068B71</color>
+    <color name="categoryKnowledge">#068B71</color>
+    <color name="categoryIt">#00A5DE</color>
+    <color name="categoryFun">#F5AC0F</color>
+    <color name="categoryEntertainment">#F5AC0F</color>
+    <color name="categoryGame">#F5AC0F</color>
+
+</resources>
