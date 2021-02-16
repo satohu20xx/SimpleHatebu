@@ -1,82 +1,125 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
-apply plugin: 'realm-android'
+apply plugin: "androidx.navigation.safeargs"
+apply plugin: 'dagger.hilt.android.plugin'
 
 android {
-    compileSdkVersion 27
+    compileSdkVersion 30
+    buildToolsVersion "29.0.3"
+
     defaultConfig {
         applicationId "com.choilabo.simplehatebu"
-        minSdkVersion 19
-        targetSdkVersion 26
+        minSdkVersion 21
+        targetSdkVersion 30
         versionCode 1
         versionName "1.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments += ["room.schemaLocation": "$projectDir/schemas".toString()]
+            }
+        }
     }
+
     buildTypes {
-        debug {
-            applicationIdSuffix ".debug"
-            debuggable true
-            minifyEnabled false
-        }
         release {
-            debuggable false
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-    dataBinding {
-        enabled = true
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8
+    }
+
+    buildFeatures {
+        dataBinding true
     }
 }
 
 dependencies {
+    implementation fileTree(dir: "libs", include: ["*.jar"])
 
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-    def support_version = '27.1.0'
-    implementation "com.android.support:design:${support_version}"
-    implementation "com.android.support:appcompat-v7:${support_version}"
-    implementation "com.android.support:recyclerview-v7:${support_version}"
-    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+    // kotlin
+    implementation 'androidx.core:core-ktx:1.3.2'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.1'
+
+    // androidx
+    implementation 'com.android.support:multidex:1.0.3'
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation "androidx.fragment:fragment-ktx:1.3.0"
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+
+    // lifecycle
+    def lifecycle_version = "2.3.0"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-common-java8:$lifecycle_version"
+
+    // Material Design Component
+    implementation "com.google.android.material:material:1.3.0"
+
+    // Navigation library
+    implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
+    implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
+
+    // Room
+    def room_version = "2.3.0-beta01"
+    implementation "androidx.room:room-runtime:$room_version"
+    kapt "androidx.room:room-compiler:$room_version"
+    implementation "androidx.room:room-ktx:$room_version"
+
+    // Glide
+    implementation 'com.github.bumptech.glide:glide:4.11.0'
+    kapt 'com.github.bumptech.glide:compiler:4.11.0'
+
+    // dagger
+    implementation "com.google.dagger:hilt-android:$dagger_version"
+    kapt "com.google.dagger:hilt-android-compiler:$dagger_version"
+
+    // daggerHilt
+    def androidx_hilt_version = "1.0.0-alpha03"
+    implementation "androidx.hilt:hilt-lifecycle-viewmodel:$androidx_hilt_version"
+    kapt "androidx.hilt:hilt-compiler:$androidx_hilt_version"
+    implementation "androidx.hilt:hilt-work:$androidx_hilt_version"
+    kapt "androidx.hilt:hilt-compiler:$androidx_hilt_version"
+
+    // Timber
+    implementation 'com.jakewharton.timber:timber:4.7.1'
+
+    // DataBinding ktx
+    implementation 'com.github.wada811:DataBinding-ktx:5.0.0'
+
+    // Retrofit
+    def retrofit_version = "2.9.0"
+    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+    implementation "com.squareup.retrofit2:converter-simplexml:$retrofit_version"
+    implementation "com.squareup.okhttp3:logging-interceptor:4.9.0"
+
+    // WorkManager
+    def work_version = "2.5.0"
+    implementation "androidx.work:work-runtime-ktx:$work_version"
+
+    // Paging
+    def paging_version = "3.0.0-beta01"
+    implementation "androidx.paging:paging-runtime:$paging_version"
+
+    // DataStore
+    def data_store_version = "1.0.0-alpha01"
+    implementation "androidx.datastore:datastore-preferences:$data_store_version"
+
+    // Test
     testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'com.android.support.test:runner:1.0.1'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
-    kapt 'com.android.databinding:compiler:3.1.0'
-
-    // ViewModel and LiveData
-    def archLifecycle_version = '1.1.1'
-    implementation "android.arch.lifecycle:extensions:${archLifecycle_version}"
-    annotationProcessor "android.arch.lifecycle:compiler:${archLifecycle_version}"
-
-    // dagger2
-    def dagger_version = '2.15'
-    implementation "com.google.dagger:dagger:$dagger_version"
-    kapt "com.google.dagger:dagger-compiler:$dagger_version"
-    implementation "com.google.dagger:dagger-android:$dagger_version"
-    implementation "com.google.dagger:dagger-android-support:$dagger_version"
-    kapt "com.google.dagger:dagger-android-processor:$dagger_version"
-
-    // rxjava
-    implementation 'io.reactivex.rxjava2:rxandroid:2.0.2'
-    implementation 'io.reactivex.rxjava2:rxjava:2.1.10'
-
-    // retrofit
-    def okhttp3_version = '3.9.0'
-    def retrofit2_version = '2.3.0'
-    implementation "com.squareup.okhttp3:okhttp:${okhttp3_version}"
-    implementation "com.squareup.okhttp3:logging-interceptor:${okhttp3_version}"
-    implementation "com.squareup.retrofit2:retrofit:${retrofit2_version}"
-    implementation "com.squareup.retrofit2:adapter-rxjava2:${retrofit2_version}"
-    implementation "com.squareup.retrofit2:converter-simplexml:${retrofit2_version}"
-
-    // JobDispatcher
-    implementation 'com.firebase:firebase-jobdispatcher:0.8.5'
-
-    // timber
-    implementation 'com.jakewharton.timber:timber:4.6.1'
-
-    // glide
-    ext.glide_version = '4.6.1'
-    implementation "com.github.bumptech.glide:glide:${glide_version}"
-    annotationProcessor "com.github.bumptech.glide:compiler:${glide_version}"
+    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 }

@@ -1,3 +1,8 @@
 <resources>
-    <string name="app_name">SimpleHatebu</string>
+    <string name="app_name" translatable="false">Simple Hatebu</string>
+    <string name="no_image" translatable="false">No Image</string>
+
+    <string name="menu_setting">Setting</string>
+
+    <string name="setting_dark_mode_title">Dark Mode</string>
 </resources>

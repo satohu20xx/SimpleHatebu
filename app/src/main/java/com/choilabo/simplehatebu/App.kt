@@ -1,35 +1,28 @@
 package com.choilabo.simplehatebu
 
-import com.choilabo.simplehatebu.data.realm.RealmProvider
-import com.choilabo.simplehatebu.di.component.DaggerAppComponent
-import com.choilabo.simplehatebu.service.GetHotentoryJobService
-import dagger.android.AndroidInjector
-import dagger.android.DaggerApplication
+import android.app.Application
+import androidx.hilt.work.HiltWorkerFactory
+import androidx.work.Configuration
+import dagger.hilt.android.HiltAndroidApp
 import timber.log.Timber
 import javax.inject.Inject
 
-
 /**
- * Created by sato_shinichiro on 2018/01/11.
+ * Created by sato_shinichiro on 2020/09/29
  */
-class App : DaggerApplication() {
+@HiltAndroidApp
+class App : Application(), Configuration.Provider {
 
     @Inject
-    lateinit var realmProvider: RealmProvider
+    lateinit var workerFactory: HiltWorkerFactory
 
     override fun onCreate() {
         super.onCreate()
-
-        realmProvider.reserve()
-        if (BuildConfig.DEBUG) {
-            Timber.plant(Timber.DebugTree())
-        }
-
-        GetHotentoryJobService.start(this)
+        Timber.plant(Timber.DebugTree())
     }
 
-    override fun applicationInjector(): AndroidInjector<out DaggerApplication> {
-        return DaggerAppComponent.builder()
-                .create(this)
-    }
+    override fun getWorkManagerConfiguration(): Configuration =
+        Configuration.Builder()
+            .setWorkerFactory(workerFactory)
+            .build()
 }

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="base">@color/gray_C0</color>
+    <color name="variant">@color/gray_FA</color>
+    <color name="onColor">@color/white</color>
+    <color name="background">@color/gray_18</color>
+    <color name="onBackground">@color/gray_FA</color>
+    <color name="statusBar">@color/black</color>
+    <color name="error">@color/red</color>
+    <color name="surface">@color/gray_FA</color>
+    <color name="disable">@color/white_opa1</color>
+
+</resources>
