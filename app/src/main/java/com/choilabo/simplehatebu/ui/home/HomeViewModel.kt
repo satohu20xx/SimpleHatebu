@@ -1,5 +1,6 @@
 package com.choilabo.simplehatebu.ui.home
 
+import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
@@ -18,7 +19,7 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(
     hatebuWorkerController: HatebuWorkerController,
     private val hatebuDataModel: HatebuDataModel
-) : ViewModel(), HomeView.Listener {
+) : ViewModel(), HomeComposableListener {
 
     val navUrl = EventLiveData<String>()
 
@@ -34,14 +35,18 @@ class HomeViewModel @Inject constructor(
         hatebuDataModel.getAll()
     }.flow
 
-    override fun onItemClicked(link: String) {
+    override fun onHatebuEntryClicked(link: String) {
         readLinks.add(link)
         navUrl.emitEvent(link)
     }
 
-    override fun onItemLongClicked(link: String) {
+    override fun onHatebuEntryLongClicked(link: String) {
         readLinks.add(link)
-        navUrl.emitEvent("https://b.hatena.ne.jp/entry/s/${link}")
+        navUrl.emitEvent(
+            Uri.parse(link).let {
+                "https://b.hatena.ne.jp/entry/s/${it.host}${it.path}"
+            }
+        )
     }
 
     fun onStop() {

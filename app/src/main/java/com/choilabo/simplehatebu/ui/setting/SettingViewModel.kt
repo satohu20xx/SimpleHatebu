@@ -14,7 +14,7 @@ import javax.inject.Inject
 @HiltViewModel
 class SettingViewModel @Inject constructor(
     private val settingDataModel: SettingDataModel
-) : ViewModel(), SettingView.Listener {
+) : ViewModel(), SettingComposableListener {
 
     val darkMode = settingDataModel.observeDarkMode()
         .asLiveData(viewModelScope.coroutineContext)
